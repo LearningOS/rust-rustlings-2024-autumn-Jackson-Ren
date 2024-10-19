@@ -10,16 +10,19 @@
 
 
 fn main() {
-    let original_price = 51;
-    println!("Your sale price is {}", sale_price(original_price));
+    let original_price_even = 52;
+    println!("Your sale price is {}, original price is {}", sale_price(original_price_even), original_price_even);
+    let original_price_odd = 51;
+    println!("Your sale price is {}, original price is {}", sale_price(original_price_odd), original_price_odd);
 }
 
 fn sale_price(price: i32) -> i32 {
     if is_even(price) {
-        price - 10
+        return price - 10;
     } else {
-        price - 3
-    }
+        3 // will return 10
+    };
+    10
 }
 
 fn is_even(num: i32) -> bool {

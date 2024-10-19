@@ -8,7 +8,7 @@
 
 fn main() {
     let a = [0; 1000];
-
+    println!("arrag len:{}", a.len());
     if a.len() >= 100 {
         println!("Wow, that's a big array!");
     } else {

@@ -3,10 +3,20 @@
 	This problem requires you to implement a sorting algorithm
 	you can use bubble sorting, insertion sorting, heap sorting, etc.
 */
-// I AM NOT DONE
 
-fn sort<T>(array: &mut [T]){
+fn sort<T: std::cmp::PartialOrd>(array: &mut [T]){
 	//TODO
+    let mut sorted_start = array.len();
+    while sorted_start > 1 {
+        let mut i = 0;
+        while i < sorted_start - 1 {
+            if array[i] > array[i+1] {
+                array.swap(i, i + 1);
+            }
+            i += 1;
+        }
+        sorted_start -= 1;
+    }
 }
 #[cfg(test)]
 mod tests {

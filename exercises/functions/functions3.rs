@@ -9,7 +9,7 @@ fn main() {
 }
 
 fn call_me(num: u32) {
-    for i in 0..num {
+    for i in num..num+3 {
         println!("Ring! Call number {}", i + 1);
     }
 }

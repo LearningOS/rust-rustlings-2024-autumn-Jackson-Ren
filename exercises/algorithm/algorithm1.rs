@@ -2,7 +2,6 @@
 	single linked list merge
 	This problem requires you to merge two ordered singly linked lists into one ordered singly linked list
 */
-// I AM NOT DONE
 
 use std::fmt::{self, Display, Formatter};
 use std::ptr::NonNull;
@@ -29,13 +28,13 @@ struct LinkedList<T> {
     end: Option<NonNull<Node<T>>>,
 }
 
-impl<T> Default for LinkedList<T> {
+impl<T: std::cmp::PartialOrd> Default for LinkedList<T> {
     fn default() -> Self {
         Self::new()
     }
 }
 
-impl<T> LinkedList<T> {
+impl<T: std::cmp::PartialOrd> LinkedList<T> {
     pub fn new() -> Self {
         Self {
             length: 0,
@@ -72,11 +71,78 @@ impl<T> LinkedList<T> {
 	pub fn merge(list_a:LinkedList<T>,list_b:LinkedList<T>) -> Self
 	{
 		//TODO
-		Self {
+        let (mut a_start, mut b_start);
+        if list_a.start.is_some() {
+            a_start = list_a.start;
+        } else {
+            return list_b;
+        }
+        if list_b.start.is_some() {
+            b_start = list_b.start;
+        } else {
+            return list_a;
+        }
+
+        let mut ret = Self {
             length: 0,
             start: None,
             end: None,
+        };
+        let mut a_length = list_a.length;
+        let mut b_length = list_b.length;
+
+        if unsafe{a_start.unwrap().as_ref().val < b_start.unwrap().as_ref().val} {
+            ret.start = a_start;
+            ret.end = a_start;
+            ret.length = 1;
+            a_length -= 1;
+            unsafe{a_start = a_start.unwrap().as_ref().next;}
+        } else {
+            ret.start = b_start;
+            ret.end = b_start;
+            ret.length = 1;
+            b_length -= 1;
+            unsafe{b_start = b_start.unwrap().as_ref().next;}
         }
+        let mut ret_end = ret.end;
+
+        while a_start.is_some() && b_start.is_some() {
+            let node_ptr;
+            if unsafe{a_start.unwrap().as_ref().val < b_start.unwrap().as_ref().val} {
+                node_ptr = a_start;
+                unsafe{a_start = a_start.unwrap().as_ref().next;}
+                a_length -= 1;
+                ret.length += 1;
+            } else {
+                node_ptr = b_start;
+                unsafe{b_start = b_start.unwrap().as_ref().next;}
+                b_length -= 1;
+                ret.length += 1;
+            }
+            unsafe { 
+                (*ret_end.unwrap().as_ptr()).next = node_ptr;
+            }
+            ret_end = node_ptr;
+        }
+
+        if a_start.is_some() {
+            unsafe { 
+                (*ret_end.unwrap().as_ptr()).next = a_start;
+            }
+            ret_end = list_a.end;
+            ret.length += a_length;
+        }
+
+        if b_start.is_some() {
+            unsafe { 
+                (*ret_end.unwrap().as_ptr()).next = b_start;
+            }
+            ret_end = list_b.end;
+            ret.length += b_length;
+        }
+        ret.end = ret_end;
+
+        ret
 	}
 }
 

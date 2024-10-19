@@ -11,4 +11,9 @@ fn main() {
     let /* your pattern here */(name, age) = cat;
 
     println!("{} is {} years old.", name, age);
+
+    let person = ("Jacky", "JiangSu", 18, true);
+    let /* your pattern here */(name, local, age, is_man) = person;
+
+    println!("{} is {} years old, come from {}, {}", name, age, local, if is_man {"is a man"} else {"is a woman"});
 }
